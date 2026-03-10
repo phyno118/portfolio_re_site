@@ -1,1 +1,214 @@
-html이 재생되고 있어요
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>하림몰 | Premium Food & Lifestyle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1A3C34; /* 프리미엄 자연주의 그린 */
+            --accent-color: #D4AF37; /* 고급스러운 골드 포인트 */
+            --bg-color: #F9F8F4; /* 오가닉한 베이지 톤 (Nature Distilled) */
+            --text-main: #333333;
+            --text-light: #777777;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Noto Serif KR', serif; }
+
+        /* 1. Header (네비게이션 및 AI 검색) */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; background: rgba(255, 255, 255, 0.95);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); letter-spacing: -1px; }
+        .nav-links a { margin: 0 15px; text-decoration: none; color: var(--text-main); font-weight: 600; }
+        .ai-search-bar {
+            background: #f1f1f1; padding: 10px 20px; border-radius: 30px;
+            display: flex; align-items: center; font-size: 14px; color: var(--text-light);
+            cursor: pointer; transition: 0.3s;
+        }
+        .ai-search-bar:hover { background: #e9e9e9; }
+
+        /* 2. Hero Section (시각적 스토리텔링 & 배송 투명성) */
+        .hero {
+            margin-top: 80px; height: 70vh;
+            background: linear-gradient(rgba(26, 60, 52, 0.7), rgba(26, 60, 52, 0.3)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; text-align: center; padding: 0 20px;
+        }
+        .hero h1 { font-size: 48px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 18px; font-weight: 300; margin-bottom: 30px; max-width: 600px; }
+        
+        /* 배송 골든타임 알림 바 */
+        .delivery-widget {
+            background: rgba(255,255,255,0.9); color: var(--text-main);
+            padding: 15px 30px; border-radius: 50px; font-weight: 600;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float { 0% {transform: translateY(0px);} 50% {transform: translateY(-10px);} 100% {transform: translateY(0px);} }
+        .highlight { color: #E74C3C; font-weight: 700; }
+
+        /* 3. AI Discovery Section (발견형 커머스) */
+        .section-container { padding: 80px 5%; }
+        .section-title { font-size: 32px; margin-bottom: 10px; color: var(--primary-color); }
+        .section-subtitle { color: var(--text-light); margin-bottom: 40px; font-size: 16px; }
+        
+        .bento-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+        }
+        .bento-item {
+            background: #fff; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
+            cursor: pointer; position: relative;
+        }
+        .bento-item:hover { transform: translateY(-5px); }
+        .bento-img { height: 200px; background-color: #ddd; background-size: cover; background-position: center; }
+        .bento-content { padding: 20px; }
+        .bento-tag { 
+            position: absolute; top: 15px; left: 15px; background: var(--primary-color); 
+            color: #fff; padding: 5px 10px; font-size: 12px; border-radius: 20px; font-weight: 600;
+        }
+
+        /* 4. Social Proof Section (신뢰 장치 & 랭킹) */
+        .ranking-container { background: #fff; padding: 60px 5%; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+        .ranking-list { display: flex; flex-direction: column; gap: 15px; }
+        .ranking-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px; background: var(--bg-color); border-radius: 10px;
+        }
+        .rank-num { font-size: 24px; font-weight: 700; color: var(--accent-color); width: 40px; }
+        .rank-info { flex-grow: 1; margin-left: 20px; }
+        .rank-info h4 { font-size: 18px; margin-bottom: 5px; }
+        .rank-stats { font-size: 14px; color: var(--text-light); }
+        .review-badge { background: #FFF3CD; color: #856404; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; }
+
+        /* 5. Lock-in / Membership (멤버십) */
+        .membership-banner {
+            margin: 80px 5%; padding: 60px 40px; border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary-color), #0f241f);
+            color: white; display: flex; justify-content: space-between; align-items: center;
+        }
+        .membership-text h2 { font-size: 36px; margin-bottom: 15px; color: var(--accent-color); }
+        .membership-text p { font-size: 18px; opacity: 0.9; }
+        .btn-premium {
+            padding: 15px 40px; background: var(--accent-color); color: #fff;
+            border: none; border-radius: 30px; font-size: 18px; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-premium:hover { background: #b5952f; transform: scale(1.05); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">HARIM MALL</div>
+        <nav class="nav-links">
+            <a href="#">The 미식</a>
+            <a href="#">신선육</a>
+            <a href="#">정기구독</a>
+            <a href="#">스토리</a>
+        </nav>
+        <div class="ai-search-bar" onclick="alert('AI 검색 큐레이션 창이 열립니다.')">
+            ✨ AI에게 오늘 저녁 메뉴 추천받기
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>식탁 위에서 만나는 완벽한 미식</h1>
+        <p>공장에서 당신의 식탁까지, 가장 신선한 상태로 전달되는 프리미엄 라이프스타일</p>
+        
+        <div class="delivery-widget" id="delivery-widget">
+            📍 <span id="user-location">강남구</span> 기준 | 지금 주문하면 <span class="highlight">내일 새벽 3시</span> 문 앞 도착 📦
+        </div>
+    </section>
+
+    <section class="section-container">
+        <h2 class="section-title">당신의 취향을 반영한 미식 큐레이션</h2>
+        <p class="section-subtitle">고객님의 최근 구매 데이터를 바탕으로 AI가 엄선했습니다.</p>
+        
+        <div class="bento-grid">
+            <div class="bento-item">
+                <span class="bento-tag">AI 매칭 98%</span>
+                <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                <div class="bento-content">
+                    <h3>더미식 장인라면 & 무항생제 닭가슴살</h3>
+                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">퇴근 후 15분 만에 완성하는 고단백 힐링 식단</p>
+                </div>
+            </div>
+            <div class="bento-item">
+                <span class="bento-tag">실시간 트렌드</span>
+                <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1504630083234-14187a9df0f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                <div class="bento-content">
+                    <h3>프리미엄 한우 다이닝 세트</h3>
+                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">홈파티를 준비하는 3040이 가장 많이 찾은 상품</p>
+                </div>
+            </div>
+            <div class="bento-item">
+                <span class="bento-tag">재구매율 1위</span>
+                <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1432139555190-58524dae6a55?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                <div class="bento-content">
+                    <h3>무항생제 신선란 30구 (정기배송)</h3>
+                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">스마트 패키징으로 온도 변화 없이 신선하게</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ranking-container">
+        <h2 class="section-title">실시간 검증된 미식 랭킹</h2>
+        <p class="section-subtitle">10만 건의 리얼 리뷰가 증명하는 실패 없는 선택</p>
+        
+        <div class="ranking-list">
+            <div class="ranking-item">
+                <div class="rank-num">1</div>
+                <div class="rank-info">
+                    <h4>더미식 백미밥 (210g x 12개)</h4>
+                    <div class="rank-stats">누적 판매량 540만 개 | 평점 ⭐ 4.9 (리뷰 24,102)</div>
+                </div>
+                <div class="review-badge">"갓 지은 밥맛 그대로예요" - 김*미님</div>
+            </div>
+            <div class="ranking-item">
+                <div class="rank-num">2</div>
+                <div class="rank-info">
+                    <h4>자연실록 동물복지 닭고기 구이용</h4>
+                    <div class="rank-stats">누적 판매량 120만 개 | 평점 ⭐ 4.8 (리뷰 9,805)</div>
+                </div>
+                <div class="review-badge">"포장을 뜯자마자 신선함이 느껴집니다" - 이*훈님</div>
+            </div>
+            <div class="ranking-item">
+                <div class="rank-num">3</div>
+                <div class="rank-info">
+                    <h4>챔 (닭가슴살 햄) 더블 기획</h4>
+                    <div class="rank-stats">최근 24시간 내 3,200개 판매 돌파 | 평점 ⭐ 4.9</div>
+                </div>
+                <div class="review-badge">재구매율 94%</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="membership-banner">
+        <div class="membership-text">
+            <h2>The Premium Members</h2>
+            <p>월 3,900원으로 누리는 무제한 무료배송과 최대 10% 추가 적립.<br>당신의 식탁을 업그레이드할 가장 완벽한 구독.</p>
+        </div>
+        <button class="btn-premium" onclick="alert('멤버십 혜택 안내 페이지로 이동합니다.')">1개월 무료 체험하기</button>
+    </section>
+
+    <script>
+        // UX 상호작용: 사용자 위치 기반 배송시간 동적 계산 스크립트 (시뮬레이션)
+        document.addEventListener('DOMContentLoaded', () => {
+            const locations = ['강남구', '서초구', '마포구', '용산구', '성동구'];
+            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+            document.getElementById('user-location').innerText = randomLocation;
+        });
+    </script>
+</body>
+</html>
