@@ -9,100 +9,138 @@
         :root {
             --primary-color: #1A3C34; /* 프리미엄 자연주의 그린 */
             --accent-color: #D4AF37; /* 고급스러운 골드 포인트 */
-            --bg-color: #F9F8F4; /* 오가닉한 베이지 톤 (Nature Distilled) */
+            --bg-color: #F9F8F4; /* 오가닉한 베이지 톤 */
             --text-main: #333333;
             --text-light: #777777;
+            --border-color: #EAEAEA;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Noto Serif KR', serif; }
+        .section-container { padding: 80px 5%; }
+        .section-title { font-size: 32px; margin-bottom: 10px; color: var(--primary-color); }
+        .section-subtitle { color: var(--text-light); margin-bottom: 40px; font-size: 16px; }
 
-        /* 1. Header (네비게이션 및 AI 검색) */
+        /* 1. Header */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 5%; background: rgba(255, 255, 255, 0.95);
             position: fixed; width: 100%; top: 0; z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); backdrop-filter: blur(10px);
         }
         .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); letter-spacing: -1px; }
-        .nav-links a { margin: 0 15px; text-decoration: none; color: var(--text-main); font-weight: 600; }
+        .nav-links a { margin: 0 15px; text-decoration: none; color: var(--text-main); font-weight: 600; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-color); }
         .ai-search-bar {
             background: #f1f1f1; padding: 10px 20px; border-radius: 30px;
             display: flex; align-items: center; font-size: 14px; color: var(--text-light);
             cursor: pointer; transition: 0.3s;
         }
-        .ai-search-bar:hover { background: #e9e9e9; }
+        .ai-search-bar:hover { background: #e9e9e9; transform: translateY(-2px); }
 
-        /* 2. Hero Section (시각적 스토리텔링 & 배송 투명성) */
+        /* 2. Hero Section */
         .hero {
-            margin-top: 80px; height: 70vh;
-            background: linear-gradient(rgba(26, 60, 52, 0.7), rgba(26, 60, 52, 0.3)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover;
+            margin-top: 70px; height: 80vh;
+            background: linear-gradient(rgba(26, 60, 52, 0.6), rgba(26, 60, 52, 0.3)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: white; text-align: center; padding: 0 20px;
         }
-        .hero h1 { font-size: 48px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero p { font-size: 18px; font-weight: 300; margin-bottom: 30px; max-width: 600px; }
+        .hero h1 { font-size: 56px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 20px; font-weight: 300; margin-bottom: 40px; }
         
-        /* 배송 골든타임 알림 바 */
         .delivery-widget {
-            background: rgba(255,255,255,0.9); color: var(--text-main);
-            padding: 15px 30px; border-radius: 50px; font-weight: 600;
+            background: rgba(255,255,255,0.95); color: var(--text-main);
+            padding: 15px 35px; border-radius: 50px; font-weight: 600;
             display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             animation: float 3s ease-in-out infinite;
         }
         @keyframes float { 0% {transform: translateY(0px);} 50% {transform: translateY(-10px);} 100% {transform: translateY(0px);} }
         .highlight { color: #E74C3C; font-weight: 700; }
 
-        /* 3. AI Discovery Section (발견형 커머스) */
-        .section-container { padding: 80px 5%; }
-        .section-title { font-size: 32px; margin-bottom: 10px; color: var(--primary-color); }
-        .section-subtitle { color: var(--text-light); margin-bottom: 40px; font-size: 16px; }
-        
-        .bento-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+        /* [추가됨] 3. Spatial UX - Brand Storytelling (공장 직영 스토리) */
+        .story-section {
+            background-color: #fff; text-align: center;
+            border-bottom: 1px solid var(--border-color);
         }
+        .timeline-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px;
+        }
+        .timeline-step {
+            padding: 40px 20px; background: var(--bg-color); border-radius: 20px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative; overflow: hidden;
+        }
+        .timeline-step:hover {
+            transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        .step-icon { font-size: 40px; margin-bottom: 20px; }
+        .step-time { color: var(--accent-color); font-weight: 700; font-size: 14px; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .timeline-step h3 { font-size: 22px; margin-bottom: 15px; }
+        .timeline-step p { font-size: 15px; color: var(--text-light); }
+
+        /* 4. AI Discovery Section (벤토 그리드) */
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .bento-item {
             background: #fff; border-radius: 15px; overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
             cursor: pointer; position: relative;
         }
         .bento-item:hover { transform: translateY(-5px); }
-        .bento-img { height: 200px; background-color: #ddd; background-size: cover; background-position: center; }
+        .bento-img { height: 220px; background-size: cover; background-position: center; transition: transform 0.5s; }
+        .bento-item:hover .bento-img { transform: scale(1.05); }
         .bento-content { padding: 20px; }
         .bento-tag { 
-            position: absolute; top: 15px; left: 15px; background: var(--primary-color); 
-            color: #fff; padding: 5px 10px; font-size: 12px; border-radius: 20px; font-weight: 600;
+            position: absolute; top: 15px; left: 15px; background: rgba(26, 60, 52, 0.9); 
+            color: #fff; padding: 6px 12px; font-size: 12px; border-radius: 20px; font-weight: 600; z-index: 2;
         }
 
-        /* 4. Social Proof Section (신뢰 장치 & 랭킹) */
-        .ranking-container { background: #fff; padding: 60px 5%; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
-        .ranking-list { display: flex; flex-direction: column; gap: 15px; }
-        .ranking-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px; background: var(--bg-color); border-radius: 10px;
+        /* [추가됨] 5. Subscription Builder (원스탑 오더 & 락인) */
+        .subscription-builder {
+            background: var(--primary-color); color: white; padding: 80px 5%;
         }
-        .rank-num { font-size: 24px; font-weight: 700; color: var(--accent-color); width: 40px; }
-        .rank-info { flex-grow: 1; margin-left: 20px; }
-        .rank-info h4 { font-size: 18px; margin-bottom: 5px; }
-        .rank-stats { font-size: 14px; color: var(--text-light); }
-        .review-badge { background: #FFF3CD; color: #856404; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; }
+        .subscription-builder .section-title { color: white; }
+        .subscription-builder .section-subtitle { color: #A0B2AD; }
+        
+        .builder-container {
+            display: flex; gap: 40px; align-items: flex-start;
+        }
+        .builder-options { flex: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .opt-card {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            padding: 20px; border-radius: 15px; cursor: pointer; transition: 0.3s;
+        }
+        .opt-card:hover, .opt-card.active {
+            background: rgba(255,255,255,0.2); border-color: var(--accent-color);
+        }
+        .opt-card h4 { font-size: 18px; margin-bottom: 5px; }
+        
+        .builder-summary {
+            flex: 1; background: #fff; color: var(--text-main);
+            padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: sticky; top: 100px;
+        }
+        .builder-summary h3 { margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .summary-price { font-size: 32px; color: var(--primary-color); font-weight: 700; margin: 20px 0; }
+        .btn-subscribe {
+            width: 100%; padding: 15px; background: var(--accent-color); color: #fff;
+            border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;
+        }
+        .btn-subscribe:hover { background: #b5952f; }
 
-        /* 5. Lock-in / Membership (멤버십) */
-        .membership-banner {
-            margin: 80px 5%; padding: 60px 40px; border-radius: 20px;
-            background: linear-gradient(135deg, var(--primary-color), #0f241f);
-            color: white; display: flex; justify-content: space-between; align-items: center;
+        /* [추가됨] 6. Footer */
+        footer {
+            background: #111; color: #888; padding: 60px 5% 30px; font-size: 14px;
         }
-        .membership-text h2 { font-size: 36px; margin-bottom: 15px; color: var(--accent-color); }
-        .membership-text p { font-size: 18px; opacity: 0.9; }
-        .btn-premium {
-            padding: 15px 40px; background: var(--accent-color); color: #fff;
-            border: none; border-radius: 30px; font-size: 18px; font-weight: 700;
-            cursor: pointer; transition: 0.3s;
-        }
-        .btn-premium:hover { background: #b5952f; transform: scale(1.05); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .footer-logo { font-family: 'Noto Serif KR', serif; font-size: 24px; color: #fff; margin-bottom: 15px; }
+        .footer-col h4 { color: #fff; margin-bottom: 15px; font-size: 16px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { color: #888; text-decoration: none; transition: 0.3s; }
+        .footer-col ul li a:hover { color: var(--accent-color); }
+        .footer-bottom { border-top: 1px solid #333; padding-top: 20px; display: flex; justify-content: space-between; }
 
     </style>
 </head>
@@ -114,9 +152,9 @@
             <a href="#">The 미식</a>
             <a href="#">신선육</a>
             <a href="#">정기구독</a>
-            <a href="#">스토리</a>
+            <a href="#">브랜드 스토리</a>
         </nav>
-        <div class="ai-search-bar" onclick="alert('AI 검색 큐레이션 창이 열립니다.')">
+        <div class="ai-search-bar" onclick="alert('AI 검색: 어떤 요리를 준비하시나요?')">
             ✨ AI에게 오늘 저녁 메뉴 추천받기
         </div>
     </header>
@@ -125,14 +163,40 @@
         <h1>식탁 위에서 만나는 완벽한 미식</h1>
         <p>공장에서 당신의 식탁까지, 가장 신선한 상태로 전달되는 프리미엄 라이프스타일</p>
         
-        <div class="delivery-widget" id="delivery-widget">
+        <div class="delivery-widget">
             📍 <span id="user-location">강남구</span> 기준 | 지금 주문하면 <span class="highlight">내일 새벽 3시</span> 문 앞 도착 📦
+        </div>
+    </section>
+
+    <section class="section-container story-section">
+        <h2 class="section-title">자연을 증류한 0시간의 마법</h2>
+        <p class="section-subtitle">생산부터 식탁까지, 하림만이 가능한 '극강의 신선함'을 시각적으로 투명하게 공개합니다.</p>
+        
+        <div class="timeline-grid">
+            <div class="timeline-step">
+                <span class="step-time">00:00 START</span>
+                <div class="step-icon">🏭</div>
+                <h3>스마트 팩토리 직가공</h3>
+                <p>도축 직후의 신선함을 유지하기 위해 골든타임 내에 가공을 완료하여 육즙과 식감을 보존합니다.</p>
+            </div>
+            <div class="timeline-step">
+                <span class="step-time">04:00 PACKAGING</span>
+                <div class="step-icon">🧊</div>
+                <h3>AI 스마트 콜드체인 패키징</h3>
+                <p>외부 온도 변화를 100% 차단하는 친환경 스마트 패키징으로 포장 내 온도를 2도로 완벽히 유지합니다.</p>
+            </div>
+            <div class="timeline-step">
+                <span class="step-time">07:00 ARRIVAL</span>
+                <div class="step-icon">🚚</div>
+                <h3>문 앞 새벽 도착</h3>
+                <p>데이터 기반의 최적화된 라우팅 기술로 가장 빠르고 안전하게 고객님의 식탁으로 배송됩니다.</p>
+            </div>
         </div>
     </section>
 
     <section class="section-container">
         <h2 class="section-title">당신의 취향을 반영한 미식 큐레이션</h2>
-        <p class="section-subtitle">고객님의 최근 구매 데이터를 바탕으로 AI가 엄선했습니다.</p>
+        <p class="section-subtitle">최근 검색 데이터와 날씨를 반영하여 AI가 엄선했습니다.</p>
         
         <div class="bento-grid">
             <div class="bento-item">
@@ -144,71 +208,36 @@
                 </div>
             </div>
             <div class="bento-item">
-                <span class="bento-tag">실시간 트렌드</span>
+                <span class="bento-tag">비 오는 날 추천</span>
                 <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1504630083234-14187a9df0f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
                 <div class="bento-content">
-                    <h3>프리미엄 한우 다이닝 세트</h3>
-                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">홈파티를 준비하는 3040이 가장 많이 찾은 상품</p>
+                    <h3>프리미엄 한우 국거리 & 곰탕 세트</h3>
+                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">따뜻한 국물이 생각나는 오늘, 깊게 우려낸 맛</p>
                 </div>
             </div>
             <div class="bento-item">
                 <span class="bento-tag">재구매율 1위</span>
                 <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1432139555190-58524dae6a55?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
                 <div class="bento-content">
-                    <h3>무항생제 신선란 30구 (정기배송)</h3>
-                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">스마트 패키징으로 온도 변화 없이 신선하게</p>
+                    <h3>자연실록 동물복지 구이용 모듬</h3>
+                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">가족과 함께하는 주말 바베큐 파티 필수품</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="ranking-container">
-        <h2 class="section-title">실시간 검증된 미식 랭킹</h2>
-        <p class="section-subtitle">10만 건의 리얼 리뷰가 증명하는 실패 없는 선택</p>
+    <section class="subscription-builder">
+        <h2 class="section-title">나만의 식탁, 커스텀 정기구독</h2>
+        <p class="section-subtitle">원하는 상품만 골라 담고, 원하는 주기에 맞춰 10% 추가 할인 혜택을 받으세요.</p>
         
-        <div class="ranking-list">
-            <div class="ranking-item">
-                <div class="rank-num">1</div>
-                <div class="rank-info">
-                    <h4>더미식 백미밥 (210g x 12개)</h4>
-                    <div class="rank-stats">누적 판매량 540만 개 | 평점 ⭐ 4.9 (리뷰 24,102)</div>
+        <div class="builder-container">
+            <div class="builder-options">
+                <div class="opt-card" onclick="toggleOption(this, 15000)">
+                    <h4>🍗 데일리 단백질 팩</h4>
+                    <p style="font-size: 13px; color: #ccc;">무항생제 닭가슴살 10팩 (월/수/금)</p>
                 </div>
-                <div class="review-badge">"갓 지은 밥맛 그대로예요" - 김*미님</div>
-            </div>
-            <div class="ranking-item">
-                <div class="rank-num">2</div>
-                <div class="rank-info">
-                    <h4>자연실록 동물복지 닭고기 구이용</h4>
-                    <div class="rank-stats">누적 판매량 120만 개 | 평점 ⭐ 4.8 (리뷰 9,805)</div>
+                <div class="opt-card active" onclick="toggleOption(this, 25000)">
+                    <h4>🍚 더미식 밥소믈리에 팩</h4>
+                    <p style="font-size: 13px; color: #ccc;">백미, 현미, 귀리 혼합 24구</p>
                 </div>
-                <div class="review-badge">"포장을 뜯자마자 신선함이 느껴집니다" - 이*훈님</div>
-            </div>
-            <div class="ranking-item">
-                <div class="rank-num">3</div>
-                <div class="rank-info">
-                    <h4>챔 (닭가슴살 햄) 더블 기획</h4>
-                    <div class="rank-stats">최근 24시간 내 3,200개 판매 돌파 | 평점 ⭐ 4.9</div>
-                </div>
-                <div class="review-badge">재구매율 94%</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="membership-banner">
-        <div class="membership-text">
-            <h2>The Premium Members</h2>
-            <p>월 3,900원으로 누리는 무제한 무료배송과 최대 10% 추가 적립.<br>당신의 식탁을 업그레이드할 가장 완벽한 구독.</p>
-        </div>
-        <button class="btn-premium" onclick="alert('멤버십 혜택 안내 페이지로 이동합니다.')">1개월 무료 체험하기</button>
-    </section>
-
-    <script>
-        // UX 상호작용: 사용자 위치 기반 배송시간 동적 계산 스크립트 (시뮬레이션)
-        document.addEventListener('DOMContentLoaded', () => {
-            const locations = ['강남구', '서초구', '마포구', '용산구', '성동구'];
-            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
-            document.getElementById('user-location').innerText = randomLocation;
-        });
-    </script>
-</body>
-</html>
+                <div class="opt-card" onclick="toggle
