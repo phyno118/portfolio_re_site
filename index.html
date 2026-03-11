@@ -3,309 +3,482 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CGV 리뉴얼 - 포트폴리오 프로토타입</title>
+  <title>CGV UX/UI Redesign Prototype</title>
+  
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css" />
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
-    /* 1. 디자인 시스템 & 베리어블 (Design Tokens) */
+    /* =========================================
+       1. Design System & Tokens
+       ========================================= */
     :root {
-      /* Color Tokens (Dark Mode Base) */
-      --cgv-red: #FF243E;
-      --cgv-red-hover: #E51A32;
-      --bg-primary: #121212;
-      --bg-secondary: #1E1E1E;
-      --text-primary: #F8F9FA;
-      --text-secondary: #A0A0A0;
+      /* Colors - Dark Mode Optimized */
+      --color-brand: #FA2A3E;
+      --color-brand-hover: #D91D2F;
+      --bg-base: #111111;
+      --bg-surface: #1C1C1C;
+      --bg-surface-elevated: #2A2A2A;
       
-      /* Seat Colors */
+      --text-primary: #F5F5F5;
+      --text-secondary: #A0A0A0;
+      --text-disabled: #555555;
+      
+      /* Seat States */
       --seat-available: #333333;
-      --seat-selected: var(--cgv-red);
-      --seat-soldout: #1A1A1A;
+      --seat-selected: var(--color-brand);
+      --seat-soldout: #111111;
+      --seat-border: #444444;
 
-      /* Spacing System */
+      /* Spacing & Layout */
+      --space-xs: 4px;
       --space-sm: 8px;
       --space-md: 16px;
       --space-lg: 24px;
-      --space-xl: 48px;
+      --space-xl: 40px;
+      
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      
+      --nav-height: 72px;
     }
 
-    /* 기본 리셋 및 레이아웃 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: 'Pretendard', -apple-system, sans-serif;
-      background-color: var(--bg-primary);
+      background-color: var(--bg-base);
       color: var(--text-primary);
+      line-height: 1.5;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* 헤더 UI */
+    /* =========================================
+       2. Global Components
+       ========================================= */
+    .btn {
+      padding: 16px 32px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-primary {
+      background-color: var(--color-brand);
+      color: #FFF;
+      box-shadow: 0 4px 14px rgba(250, 42, 62, 0.3);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--color-brand-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(250, 42, 62, 0.4);
+    }
+    .btn:disabled {
+      background-color: var(--bg-surface-elevated);
+      color: var(--text-disabled);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* =========================================
+       3. Main Layout & Hero (GSAP ScrollTrigger)
+       ========================================= */
     header {
+      position: fixed;
+      top: 0; width: 100%;
+      height: var(--nav-height);
       display: flex;
       justify-content: space-between;
-      align-content: center;
-      padding: var(--space-lg) 5%;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 10;
-      background: linear-gradient(to bottom, rgba(18,18,18,0.9), transparent);
+      align-items: center;
+      padding: 0 5%;
+      z-index: 50;
+      background: linear-gradient(to bottom, rgba(17,17,17,0.9), transparent);
+      backdrop-filter: blur(4px);
     }
-    .logo { font-size: 24px; font-weight: 800; color: var(--cgv-red); letter-spacing: -1px; }
-    .nav-utils { display: flex; gap: var(--space-md); cursor: pointer; }
+    .logo { font-size: 28px; font-weight: 900; color: var(--color-brand); letter-spacing: -1px; }
+    .nav-utils { display: flex; gap: var(--space-lg); font-weight: 500; cursor: pointer; color: var(--text-primary); }
 
-    /* 메인 히어로 섹션 (시네마틱 스크롤 대상) */
-    .hero-section {
+    .hero {
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 0 5%;
+      justify-content: flex-end;
+      padding: 10% 5%;
       background: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
       position: relative;
     }
-    .hero-section::after {
+    .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, var(--bg-primary), transparent 60%);
+      background: linear-gradient(0deg, var(--bg-base) 0%, rgba(17,17,17,0.4) 50%, rgba(17,17,17,0.1) 100%);
     }
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 600px;
+      max-width: 800px;
+      margin-bottom: var(--space-xl);
     }
-    .hero-content h1 { font-size: 3.5rem; margin-bottom: var(--space-sm); }
-    .hero-content p { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: var(--space-xl); }
-    
-    /* 버튼 컴포넌트 */
-    .btn {
-      padding: 16px 32px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      margin-bottom: var(--space-md);
+      backdrop-filter: blur(4px);
     }
-    .btn-primary {
-      background-color: var(--cgv-red);
-      color: white;
-    }
-    .btn-primary:hover { background-color: var(--cgv-red-hover); transform: translateY(-2px); }
+    .hero h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: var(--space-md); letter-spacing: -1px; }
+    .hero p { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: var(--space-xl); font-weight: 300; }
 
-    /* 2. 몰입형 예매 모달 (뺄셈의 미학 적용) */
-    .booking-overlay {
+    /* =========================================
+       4. Immersive Booking Flow (뺄셈의 미학 UX)
+       ========================================= */
+    .booking-modal {
       position: fixed;
       inset: 0;
-      background-color: var(--bg-primary);
+      background-color: var(--bg-base);
       z-index: 100;
       display: flex;
       flex-direction: column;
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s;
     }
-    .booking-overlay.active {
+    .booking-modal.is-open {
       opacity: 1;
-      pointer-events: auto;
+      visibility: visible;
     }
-    
-    .booking-header {
+
+    .modal-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: var(--space-lg) 5%;
-      border-bottom: 1px solid var(--bg-secondary);
+      border-bottom: 1px solid var(--bg-surface);
+      background-color: var(--bg-base);
     }
-    .close-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+    .modal-header h2 { font-size: 1.2rem; font-weight: 600; }
+    .close-btn { 
+      background: none; border: none; color: var(--text-secondary); 
+      font-size: 1.5rem; cursor: pointer; transition: color 0.2s;
+    }
+    .close-btn:hover { color: var(--text-primary); }
 
-    /* 3. CSS Grid 좌석 선택 UI */
-    .seat-selection-container {
+    /* Seat Map Layout */
+    .booking-body {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: var(--space-xl);
-    }
-    .screen {
-      width: 100%;
-      max-width: 600px;
-      height: 40px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
-      border-top: 4px solid var(--text-secondary);
-      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-      margin-bottom: var(--space-xl);
-      text-align: center;
-      color: var(--text-secondary);
-      line-height: 40px;
-      font-weight: bold;
-      letter-spacing: 10px;
-    }
-    .seat-map {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: var(--space-sm);
-      margin-bottom: var(--space-xl);
-    }
-    .seat {
-      width: 30px;
-      height: 30px;
-      background-color: var(--seat-available);
-      border-radius: 4px 4px 8px 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .seat:hover:not(.soldout) { background-color: #555; transform: scale(1.1); }
-    .seat.selected { background-color: var(--seat-selected); box-shadow: 0 0 10px rgba(255,36,62,0.5); }
-    .seat.soldout { background-color: var(--seat-soldout); cursor: not-allowed; opacity: 0.3; }
-    
-    /* 복도 구현 (3번째, 10번째 열 뒤에 여백) */
-    .seat:nth-child(12n + 3), .seat:nth-child(12n + 9) {
-      margin-right: var(--space-lg);
+      padding: var(--space-xl) 5%;
+      overflow-y: auto;
     }
 
-    .booking-footer {
-      padding: var(--space-lg) 5%;
-      background-color: var(--bg-secondary);
+    /* Screen UI */
+    .cinema-screen {
+      width: 100%;
+      max-width: 600px;
+      height: 60px;
+      margin-bottom: 60px;
+      position: relative;
+      text-align: center;
+    }
+    .cinema-screen::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 100%;
+      border-top: 4px solid var(--text-disabled);
+      border-radius: 50% / 100% 100% 0 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+    }
+    .cinema-screen span {
+      position: relative;
+      top: 20px;
+      color: var(--text-disabled);
+      letter-spacing: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* Seat Grid System (복도 포함) */
+    .seat-grid {
+      display: grid;
+      grid-template-columns: repeat(14, minmax(28px, 1fr));
+      gap: 10px;
+      margin-bottom: var(--space-xl);
+    }
+    /* 4번째, 11번째 좌석 다음에 복도(Aisle) 생성 */
+    .seat-grid > div:nth-child(14n + 4),
+    .seat-grid > div:nth-child(14n + 10) {
+      margin-right: 24px;
+    }
+
+    .seat {
+      aspect-ratio: 1 / 1;
+      background-color: var(--seat-available);
+      border: 1px solid var(--seat-border);
+      border-radius: 6px 6px 4px 4px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    /* 머리받침 디테일 */
+    .seat::before {
+      content: '';
+      position: absolute;
+      top: -3px; left: 15%; right: 15%;
+      height: 6px;
+      background-color: inherit;
+      border-radius: 4px;
+      opacity: 0.8;
+    }
+    .seat:hover:not(.soldout) {
+      background-color: #555;
+      transform: translateY(-2px);
+    }
+    .seat.selected {
+      background-color: var(--seat-selected);
+      border-color: var(--color-brand);
+    }
+    .seat.soldout {
+      background-color: var(--seat-soldout);
+      border-color: #222;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .seat.soldout::after {
+      content: '✕';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #444;
+    }
+
+    /* Legend (범례) */
+    .seat-legend {
+      display: flex;
+      gap: var(--space-lg);
+      margin-top: var(--space-md);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--bg-surface);
+      width: 100%;
+      max-width: 600px;
+      justify-content: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .legend-box {
+      width: 16px; height: 16px;
+      border-radius: 3px;
+    }
+
+    /* Footer / 결제 영역 */
+    .modal-footer {
+      padding: var(--space-md) 5%;
+      background-color: var(--bg-surface);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-top: 1px solid var(--bg-surface-elevated);
     }
+    .booking-info { display: flex; flex-direction: column; }
+    .booking-info span { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 2px; }
+    .booking-info strong { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); }
+
   </style>
 </head>
 <body>
 
   <header>
     <div class="logo">CGV</div>
-    <div class="nav-utils">🔍 검색</div>
+    <div class="nav-utils">
+      <span>로그인</span>
+      <span>☰</span>
+    </div>
   </header>
 
-  <section class="hero-section">
+  <main class="hero">
     <div class="hero-content">
-      <h1 class="gsap-title">듄: 파트 2</h1>
-      <p class="gsap-desc">IMAX 예매율 1위 | 절찬 상영중</p>
-      <button class="btn btn-primary gsap-btn" id="openBookingBtn">예매하기 (몰입 모드)</button>
+      <div class="badge gs-reveal">IMAX 예매율 1위</div>
+      <h1 class="gs-reveal">듄: 파트 2</h1>
+      <p class="gs-reveal">운명을 거스르는 자, 새로운 전설이 된다.<br>가장 완벽한 시네마틱 경험을 지금 예매하세요.</p>
+      <button class="btn btn-primary gs-reveal" id="btnOpenBooking">빠른 예매 시작하기</button>
     </div>
-  </section>
+  </main>
 
-  <div class="booking-overlay" id="bookingModal">
-    <div class="booking-header">
-      <h2>좌석 선택</h2>
-      <button class="close-btn" id="closeBookingBtn">✕</button>
+  <div class="booking-modal" id="bookingModal">
+    <div class="modal-header">
+      <h2>좌석 선택 <span style="color:var(--text-secondary); font-weight:400; font-size:0.9rem; margin-left:8px;">용산아이파크몰 IMAX관</span></h2>
+      <button class="close-btn" id="btnCloseBooking">✕</button>
     </div>
     
-    <div class="seat-selection-container">
-      <div class="screen">SCREEN</div>
-      <div class="seat-map" id="seatMap">
-        </div>
+    <div class="booking-body">
+      <div class="cinema-screen"><span>SCREEN</span></div>
+      
+      <div class="seat-grid" id="seatGrid"></div>
+      
+      <div class="seat-legend">
+        <div class="legend-item"><div class="legend-box" style="background:var(--seat-available); border:1px solid var(--seat-border);"></div> 선택 가능</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--seat-selected);"></div> 선택됨</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--seat-soldout); border:1px solid #222;"></div> 예매 완료</div>
+      </div>
     </div>
 
-    <div class="booking-footer">
-      <div>
-        <p style="color: var(--text-secondary); font-size: 0.9rem;">선택된 좌석</p>
-        <h3 id="selectedSeatsText">-</h3>
+    <div class="modal-footer">
+      <div class="booking-info">
+        <span>선택된 좌석 (최대 4석)</span>
+        <strong id="txtSelectedSeats">좌석을 선택해주세요</strong>
       </div>
-      <button class="btn btn-primary" id="paymentBtn" style="opacity: 0.5; cursor: not-allowed;">결제하기</button>
+      <button class="btn btn-primary" id="btnPayment" disabled>결제하기</button>
     </div>
   </div>
 
   <script>
-    // 1. GSAP 시네마틱 등장 애니메이션
+    // =========================================
+    // 1. GSAP 메인 애니메이션
+    // =========================================
     gsap.registerPlugin(ScrollTrigger);
     
-    gsap.from(".gsap-title", { opacity: 0, y: 30, duration: 1, delay: 0.2 });
-    gsap.from(".gsap-desc", { opacity: 0, y: 30, duration: 1, delay: 0.4 });
-    gsap.from(".gsap-btn", { opacity: 0, y: 30, duration: 1, delay: 0.6 });
+    // 텍스트 및 버튼 부드러운 순차 등장
+    gsap.from(".gs-reveal", { 
+      opacity: 0, 
+      y: 30, 
+      duration: 1, 
+      stagger: 0.15, 
+      ease: "power3.out",
+      delay: 0.2
+    });
 
-    // 배경 패럴랙스 스크롤 효과
-    gsap.to(".hero-section", {
-      backgroundPosition: "50% 100%",
+    // 배경 패럴랙스 (스크롤 시 살짝 올라가는 효과)
+    gsap.to(".hero", {
+      backgroundPosition: "50% 80%",
       ease: "none",
       scrollTrigger: {
-        trigger: ".hero-section",
+        trigger: ".hero",
         start: "top top",
         end: "bottom top",
         scrub: true
       }
     });
 
-    // 2. 몰입형 예매 모달 제어 (인지적 과부하 방지)
-    const openBtn = document.getElementById('openBookingBtn');
-    const closeBtn = document.getElementById('closeBookingBtn');
+    // =========================================
+    // 2. 예매 모달 및 좌석 로직 구현
+    // =========================================
     const modal = document.getElementById('bookingModal');
-
-    openBtn.addEventListener('click', () => {
-      modal.classList.add('active');
-      // 모달 열릴 때 좌석 맵 애니메이션
-      gsap.fromTo(".seat", 
-        { opacity: 0, scale: 0.5 }, 
-        { opacity: 1, scale: 1, duration: 0.4, stagger: 0.01, ease: "back.out(1.7)" }
-      );
-    });
-
-    closeBtn.addEventListener('click', () => {
-      modal.classList.remove('active');
-    });
-
-    // 3. 좌석 생성 및 인터랙션 로직 (결정 피로 최소화)
-    const seatMap = document.getElementById('seatMap');
-    const selectedSeatsText = document.getElementById('selectedSeatsText');
-    const paymentBtn = document.getElementById('paymentBtn');
-    const totalRows = 6;
-    const seatsPerRow = 12;
+    const seatGrid = document.getElementById('seatGrid');
+    const txtSelectedSeats = document.getElementById('txtSelectedSeats');
+    const btnPayment = document.getElementById('btnPayment');
+    
+    const TICKET_PRICE = 15000;
+    const MAX_SEATS = 4;
     let selectedSeats = [];
 
-    // 가상의 좌석 데이터 생성
-    for (let r = 0; r < totalRows; r++) {
-      for (let c = 0; c < seatsPerRow; c++) {
-        const seat = document.createElement('div');
-        seat.classList.add('seat');
-        
-        // 랜덤으로 예매 완료(soldout) 좌석 생성
-        if (Math.random() < 0.2) {
-          seat.classList.add('soldout');
-        } else {
-          // 클릭 이벤트 추가
-          seat.addEventListener('click', () => toggleSeat(seat, r, c));
+    // 좌석 데이터 생성 (총 8열, 한 열당 14석)
+    const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const seatsPerRow = 14;
+
+    function initSeats() {
+      seatGrid.innerHTML = '';
+      rows.forEach((row) => {
+        for (let i = 1; i <= seatsPerRow; i++) {
+          const seat = document.createElement('div');
+          seat.className = 'seat';
+          const seatId = `${row}${i}`;
+          
+          // 랜덤으로 15% 확률로 예매 완료 좌석 생성
+          if (Math.random() < 0.15) {
+            seat.classList.add('soldout');
+          } else {
+            // 클릭 이벤트 바인딩
+            seat.addEventListener('click', () => handleSeatClick(seat, seatId));
+          }
+          seatGrid.appendChild(seat);
         }
-        seatMap.appendChild(seat);
-      }
+      });
     }
 
-    // 좌석 선택/해제 함수
-    function toggleSeat(seatElement, row, col) {
-      const seatId = `${String.fromCharCode(65 + row)}${col + 1}`; // 예: A1, B4
-      
-      if (seatElement.classList.contains('selected')) {
+    function handleSeatClick(seatElement, seatId) {
+      const isSelected = seatElement.classList.contains('selected');
+
+      if (isSelected) {
         seatElement.classList.remove('selected');
         selectedSeats = selectedSeats.filter(id => id !== seatId);
       } else {
-        if(selectedSeats.length >= 4) {
-          alert("최대 4석까지만 선택 가능합니다.");
+        if (selectedSeats.length >= MAX_SEATS) {
+          // 경고 애니메이션 (버튼 흔들기)
+          gsap.fromTo(seatElement, 
+            { x: -5 }, { x: 5, duration: 0.05, yoyo: true, repeat: 5, clearProps: "x" }
+          );
           return;
         }
         seatElement.classList.add('selected');
         selectedSeats.push(seatId);
+        
+        // 선택 팝업 효과
+        gsap.fromTo(seatElement, { scale: 0.8 }, { scale: 1, duration: 0.3, ease: "back.out(2)" });
       }
-      updateFooter();
+      updateFooterUI();
     }
 
-    // 하단 결제 정보 업데이트
-    function updateFooter() {
+    function updateFooterUI() {
+      // 좌석 정렬하여 표시 (A1, A2 순)
+      selectedSeats.sort((a, b) => {
+        if(a[0] !== b[0]) return a.charCodeAt(0) - b.charCodeAt(0);
+        return parseInt(a.slice(1)) - parseInt(b.slice(1));
+      });
+
       if (selectedSeats.length > 0) {
-        selectedSeatsText.textContent = selectedSeats.join(', ');
-        paymentBtn.style.opacity = '1';
-        paymentBtn.style.cursor = 'pointer';
-        paymentBtn.textContent = `${selectedSeats.length * 15000}원 결제하기`;
+        txtSelectedSeats.textContent = selectedSeats.join(', ');
+        const totalPrice = (selectedSeats.length * TICKET_PRICE).toLocaleString();
+        btnPayment.textContent = `${totalPrice}원 결제하기`;
+        btnPayment.disabled = false;
       } else {
-        selectedSeatsText.textContent = '-';
-        paymentBtn.style.opacity = '0.5';
-        paymentBtn.style.cursor = 'not-allowed';
-        paymentBtn.textContent = '결제하기';
+        txtSelectedSeats.textContent = '좌석을 선택해주세요';
+        btnPayment.textContent = '결제하기';
+        btnPayment.disabled = true;
       }
     }
+
+    // 모달 열기/닫기 제어
+    document.getElementById('btnOpenBooking').addEventListener('click', () => {
+      initSeats(); // 열 때마다 초기화 (데모용)
+      selectedSeats = [];
+      updateFooterUI();
+      
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden'; // 뒤쪽 스크롤 방지
+
+      // 좌석 스르륵 나타나는 애니메이션 (GSAP Stagger)
+      gsap.fromTo(".seat", 
+        { opacity: 0, scale: 0.5, y: 10 }, 
+        { opacity: 1, scale: 1, y: 0, duration: 0.4, stagger: 0.005, ease: "power2.out", delay: 0.1 }
+      );
+    });
+
+    document.getElementById('btnCloseBooking').addEventListener('click', () => {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    });
   </script>
 </body>
 </html>
