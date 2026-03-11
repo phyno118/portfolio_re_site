@@ -1,243 +1,311 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>하림몰 | Premium Food & Lifestyle</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Pretendard:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #1A3C34; /* 프리미엄 자연주의 그린 */
-            --accent-color: #D4AF37; /* 고급스러운 골드 포인트 */
-            --bg-color: #F9F8F4; /* 오가닉한 베이지 톤 */
-            --text-main: #333333;
-            --text-light: #777777;
-            --border-color: #EAEAEA;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGV 리뉴얼 - 포트폴리오 프로토타입</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
-        h1, h2, h3 { font-family: 'Noto Serif KR', serif; }
-        .section-container { padding: 80px 5%; }
-        .section-title { font-size: 32px; margin-bottom: 10px; color: var(--primary-color); }
-        .section-subtitle { color: var(--text-light); margin-bottom: 40px; font-size: 16px; }
+  <style>
+    /* 1. 디자인 시스템 & 베리어블 (Design Tokens) */
+    :root {
+      /* Color Tokens (Dark Mode Base) */
+      --cgv-red: #FF243E;
+      --cgv-red-hover: #E51A32;
+      --bg-primary: #121212;
+      --bg-secondary: #1E1E1E;
+      --text-primary: #F8F9FA;
+      --text-secondary: #A0A0A0;
+      
+      /* Seat Colors */
+      --seat-available: #333333;
+      --seat-selected: var(--cgv-red);
+      --seat-soldout: #1A1A1A;
 
-        /* 1. Header */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 5%; background: rgba(255, 255, 255, 0.95);
-            position: fixed; width: 100%; top: 0; z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); backdrop-filter: blur(10px);
-        }
-        .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); letter-spacing: -1px; }
-        .nav-links a { margin: 0 15px; text-decoration: none; color: var(--text-main); font-weight: 600; transition: color 0.3s; }
-        .nav-links a:hover { color: var(--accent-color); }
-        .ai-search-bar {
-            background: #f1f1f1; padding: 10px 20px; border-radius: 30px;
-            display: flex; align-items: center; font-size: 14px; color: var(--text-light);
-            cursor: pointer; transition: 0.3s;
-        }
-        .ai-search-bar:hover { background: #e9e9e9; transform: translateY(-2px); }
+      /* Spacing System */
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 48px;
+    }
 
-        /* 2. Hero Section */
-        .hero {
-            margin-top: 70px; height: 80vh;
-            background: linear-gradient(rgba(26, 60, 52, 0.6), rgba(26, 60, 52, 0.3)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: white; text-align: center; padding: 0 20px;
-        }
-        .hero h1 { font-size: 56px; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero p { font-size: 20px; font-weight: 300; margin-bottom: 40px; }
-        
-        .delivery-widget {
-            background: rgba(255,255,255,0.95); color: var(--text-main);
-            padding: 15px 35px; border-radius: 50px; font-weight: 600;
-            display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float { 0% {transform: translateY(0px);} 50% {transform: translateY(-10px);} 100% {transform: translateY(0px);} }
-        .highlight { color: #E74C3C; font-weight: 700; }
+    /* 기본 리셋 및 레이아웃 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
 
-        /* [추가됨] 3. Spatial UX - Brand Storytelling (공장 직영 스토리) */
-        .story-section {
-            background-color: #fff; text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .timeline-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px;
-        }
-        .timeline-step {
-            padding: 40px 20px; background: var(--bg-color); border-radius: 20px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            position: relative; overflow: hidden;
-        }
-        .timeline-step:hover {
-            transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-        }
-        .step-icon { font-size: 40px; margin-bottom: 20px; }
-        .step-time { color: var(--accent-color); font-weight: 700; font-size: 14px; letter-spacing: 1px; margin-bottom: 10px; display: block; }
-        .timeline-step h3 { font-size: 22px; margin-bottom: 15px; }
-        .timeline-step p { font-size: 15px; color: var(--text-light); }
+    /* 헤더 UI */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      padding: var(--space-lg) 5%;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(to bottom, rgba(18,18,18,0.9), transparent);
+    }
+    .logo { font-size: 24px; font-weight: 800; color: var(--cgv-red); letter-spacing: -1px; }
+    .nav-utils { display: flex; gap: var(--space-md); cursor: pointer; }
 
-        /* 4. AI Discovery Section (벤토 그리드) */
-        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .bento-item {
-            background: #fff; border-radius: 15px; overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
-            cursor: pointer; position: relative;
-        }
-        .bento-item:hover { transform: translateY(-5px); }
-        .bento-img { height: 220px; background-size: cover; background-position: center; transition: transform 0.5s; }
-        .bento-item:hover .bento-img { transform: scale(1.05); }
-        .bento-content { padding: 20px; }
-        .bento-tag { 
-            position: absolute; top: 15px; left: 15px; background: rgba(26, 60, 52, 0.9); 
-            color: #fff; padding: 6px 12px; font-size: 12px; border-radius: 20px; font-weight: 600; z-index: 2;
-        }
+    /* 메인 히어로 섹션 (시네마틱 스크롤 대상) */
+    .hero-section {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 5%;
+      background: url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+      position: relative;
+    }
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--bg-primary), transparent 60%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+    .hero-content h1 { font-size: 3.5rem; margin-bottom: var(--space-sm); }
+    .hero-content p { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: var(--space-xl); }
+    
+    /* 버튼 컴포넌트 */
+    .btn {
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-primary {
+      background-color: var(--cgv-red);
+      color: white;
+    }
+    .btn-primary:hover { background-color: var(--cgv-red-hover); transform: translateY(-2px); }
 
-        /* [추가됨] 5. Subscription Builder (원스탑 오더 & 락인) */
-        .subscription-builder {
-            background: var(--primary-color); color: white; padding: 80px 5%;
-        }
-        .subscription-builder .section-title { color: white; }
-        .subscription-builder .section-subtitle { color: #A0B2AD; }
-        
-        .builder-container {
-            display: flex; gap: 40px; align-items: flex-start;
-        }
-        .builder-options { flex: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .opt-card {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            padding: 20px; border-radius: 15px; cursor: pointer; transition: 0.3s;
-        }
-        .opt-card:hover, .opt-card.active {
-            background: rgba(255,255,255,0.2); border-color: var(--accent-color);
-        }
-        .opt-card h4 { font-size: 18px; margin-bottom: 5px; }
-        
-        .builder-summary {
-            flex: 1; background: #fff; color: var(--text-main);
-            padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            position: sticky; top: 100px;
-        }
-        .builder-summary h3 { margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .summary-price { font-size: 32px; color: var(--primary-color); font-weight: 700; margin: 20px 0; }
-        .btn-subscribe {
-            width: 100%; padding: 15px; background: var(--accent-color); color: #fff;
-            border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;
-        }
-        .btn-subscribe:hover { background: #b5952f; }
+    /* 2. 몰입형 예매 모달 (뺄셈의 미학 적용) */
+    .booking-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg-primary);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    .booking-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .booking-header {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-lg) 5%;
+      border-bottom: 1px solid var(--bg-secondary);
+    }
+    .close-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
-        /* [추가됨] 6. Footer */
-        footer {
-            background: #111; color: #888; padding: 60px 5% 30px; font-size: 14px;
-        }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-        .footer-logo { font-family: 'Noto Serif KR', serif; font-size: 24px; color: #fff; margin-bottom: 15px; }
-        .footer-col h4 { color: #fff; margin-bottom: 15px; font-size: 16px; }
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 10px; }
-        .footer-col ul li a { color: #888; text-decoration: none; transition: 0.3s; }
-        .footer-col ul li a:hover { color: var(--accent-color); }
-        .footer-bottom { border-top: 1px solid #333; padding-top: 20px; display: flex; justify-content: space-between; }
+    /* 3. CSS Grid 좌석 선택 UI */
+    .seat-selection-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+    }
+    .screen {
+      width: 100%;
+      max-width: 600px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+      border-top: 4px solid var(--text-secondary);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      margin-bottom: var(--space-xl);
+      text-align: center;
+      color: var(--text-secondary);
+      line-height: 40px;
+      font-weight: bold;
+      letter-spacing: 10px;
+    }
+    .seat-map {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+    }
+    .seat {
+      width: 30px;
+      height: 30px;
+      background-color: var(--seat-available);
+      border-radius: 4px 4px 8px 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .seat:hover:not(.soldout) { background-color: #555; transform: scale(1.1); }
+    .seat.selected { background-color: var(--seat-selected); box-shadow: 0 0 10px rgba(255,36,62,0.5); }
+    .seat.soldout { background-color: var(--seat-soldout); cursor: not-allowed; opacity: 0.3; }
+    
+    /* 복도 구현 (3번째, 10번째 열 뒤에 여백) */
+    .seat:nth-child(12n + 3), .seat:nth-child(12n + 9) {
+      margin-right: var(--space-lg);
+    }
 
-    </style>
+    .booking-footer {
+      padding: var(--space-lg) 5%;
+      background-color: var(--bg-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">HARIM MALL</div>
-        <nav class="nav-links">
-            <a href="#">The 미식</a>
-            <a href="#">신선육</a>
-            <a href="#">정기구독</a>
-            <a href="#">브랜드 스토리</a>
-        </nav>
-        <div class="ai-search-bar" onclick="alert('AI 검색: 어떤 요리를 준비하시나요?')">
-            ✨ AI에게 오늘 저녁 메뉴 추천받기
-        </div>
-    </header>
+  <header>
+    <div class="logo">CGV</div>
+    <div class="nav-utils">🔍 검색</div>
+  </header>
 
-    <section class="hero">
-        <h1>식탁 위에서 만나는 완벽한 미식</h1>
-        <p>공장에서 당신의 식탁까지, 가장 신선한 상태로 전달되는 프리미엄 라이프스타일</p>
-        
-        <div class="delivery-widget">
-            📍 <span id="user-location">강남구</span> 기준 | 지금 주문하면 <span class="highlight">내일 새벽 3시</span> 문 앞 도착 📦
-        </div>
-    </section>
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="gsap-title">듄: 파트 2</h1>
+      <p class="gsap-desc">IMAX 예매율 1위 | 절찬 상영중</p>
+      <button class="btn btn-primary gsap-btn" id="openBookingBtn">예매하기 (몰입 모드)</button>
+    </div>
+  </section>
 
-    <section class="section-container story-section">
-        <h2 class="section-title">자연을 증류한 0시간의 마법</h2>
-        <p class="section-subtitle">생산부터 식탁까지, 하림만이 가능한 '극강의 신선함'을 시각적으로 투명하게 공개합니다.</p>
-        
-        <div class="timeline-grid">
-            <div class="timeline-step">
-                <span class="step-time">00:00 START</span>
-                <div class="step-icon">🏭</div>
-                <h3>스마트 팩토리 직가공</h3>
-                <p>도축 직후의 신선함을 유지하기 위해 골든타임 내에 가공을 완료하여 육즙과 식감을 보존합니다.</p>
-            </div>
-            <div class="timeline-step">
-                <span class="step-time">04:00 PACKAGING</span>
-                <div class="step-icon">🧊</div>
-                <h3>AI 스마트 콜드체인 패키징</h3>
-                <p>외부 온도 변화를 100% 차단하는 친환경 스마트 패키징으로 포장 내 온도를 2도로 완벽히 유지합니다.</p>
-            </div>
-            <div class="timeline-step">
-                <span class="step-time">07:00 ARRIVAL</span>
-                <div class="step-icon">🚚</div>
-                <h3>문 앞 새벽 도착</h3>
-                <p>데이터 기반의 최적화된 라우팅 기술로 가장 빠르고 안전하게 고객님의 식탁으로 배송됩니다.</p>
-            </div>
+  <div class="booking-overlay" id="bookingModal">
+    <div class="booking-header">
+      <h2>좌석 선택</h2>
+      <button class="close-btn" id="closeBookingBtn">✕</button>
+    </div>
+    
+    <div class="seat-selection-container">
+      <div class="screen">SCREEN</div>
+      <div class="seat-map" id="seatMap">
         </div>
-    </section>
+    </div>
 
-    <section class="section-container">
-        <h2 class="section-title">당신의 취향을 반영한 미식 큐레이션</h2>
-        <p class="section-subtitle">최근 검색 데이터와 날씨를 반영하여 AI가 엄선했습니다.</p>
-        
-        <div class="bento-grid">
-            <div class="bento-item">
-                <span class="bento-tag">AI 매칭 98%</span>
-                <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
-                <div class="bento-content">
-                    <h3>더미식 장인라면 & 무항생제 닭가슴살</h3>
-                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">퇴근 후 15분 만에 완성하는 고단백 힐링 식단</p>
-                </div>
-            </div>
-            <div class="bento-item">
-                <span class="bento-tag">비 오는 날 추천</span>
-                <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1504630083234-14187a9df0f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
-                <div class="bento-content">
-                    <h3>프리미엄 한우 국거리 & 곰탕 세트</h3>
-                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">따뜻한 국물이 생각나는 오늘, 깊게 우려낸 맛</p>
-                </div>
-            </div>
-            <div class="bento-item">
-                <span class="bento-tag">재구매율 1위</span>
-                <div class="bento-img" style="background-image: url('https://images.unsplash.com/photo-1432139555190-58524dae6a55?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
-                <div class="bento-content">
-                    <h3>자연실록 동물복지 구이용 모듬</h3>
-                    <p style="color: var(--text-light); font-size: 14px; margin-top: 5px;">가족과 함께하는 주말 바베큐 파티 필수품</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="booking-footer">
+      <div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">선택된 좌석</p>
+        <h3 id="selectedSeatsText">-</h3>
+      </div>
+      <button class="btn btn-primary" id="paymentBtn" style="opacity: 0.5; cursor: not-allowed;">결제하기</button>
+    </div>
+  </div>
 
-    <section class="subscription-builder">
-        <h2 class="section-title">나만의 식탁, 커스텀 정기구독</h2>
-        <p class="section-subtitle">원하는 상품만 골라 담고, 원하는 주기에 맞춰 10% 추가 할인 혜택을 받으세요.</p>
+  <script>
+    // 1. GSAP 시네마틱 등장 애니메이션
+    gsap.registerPlugin(ScrollTrigger);
+    
+    gsap.from(".gsap-title", { opacity: 0, y: 30, duration: 1, delay: 0.2 });
+    gsap.from(".gsap-desc", { opacity: 0, y: 30, duration: 1, delay: 0.4 });
+    gsap.from(".gsap-btn", { opacity: 0, y: 30, duration: 1, delay: 0.6 });
+
+    // 배경 패럴랙스 스크롤 효과
+    gsap.to(".hero-section", {
+      backgroundPosition: "50% 100%",
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".hero-section",
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // 2. 몰입형 예매 모달 제어 (인지적 과부하 방지)
+    const openBtn = document.getElementById('openBookingBtn');
+    const closeBtn = document.getElementById('closeBookingBtn');
+    const modal = document.getElementById('bookingModal');
+
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+      // 모달 열릴 때 좌석 맵 애니메이션
+      gsap.fromTo(".seat", 
+        { opacity: 0, scale: 0.5 }, 
+        { opacity: 1, scale: 1, duration: 0.4, stagger: 0.01, ease: "back.out(1.7)" }
+      );
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    // 3. 좌석 생성 및 인터랙션 로직 (결정 피로 최소화)
+    const seatMap = document.getElementById('seatMap');
+    const selectedSeatsText = document.getElementById('selectedSeatsText');
+    const paymentBtn = document.getElementById('paymentBtn');
+    const totalRows = 6;
+    const seatsPerRow = 12;
+    let selectedSeats = [];
+
+    // 가상의 좌석 데이터 생성
+    for (let r = 0; r < totalRows; r++) {
+      for (let c = 0; c < seatsPerRow; c++) {
+        const seat = document.createElement('div');
+        seat.classList.add('seat');
         
-        <div class="builder-container">
-            <div class="builder-options">
-                <div class="opt-card" onclick="toggleOption(this, 15000)">
-                    <h4>🍗 데일리 단백질 팩</h4>
-                    <p style="font-size: 13px; color: #ccc;">무항생제 닭가슴살 10팩 (월/수/금)</p>
-                </div>
-                <div class="opt-card active" onclick="toggleOption(this, 25000)">
-                    <h4>🍚 더미식 밥소믈리에 팩</h4>
-                    <p style="font-size: 13px; color: #ccc;">백미, 현미, 귀리 혼합 24구</p>
-                </div>
-                <div class="opt-card" onclick="toggle
+        // 랜덤으로 예매 완료(soldout) 좌석 생성
+        if (Math.random() < 0.2) {
+          seat.classList.add('soldout');
+        } else {
+          // 클릭 이벤트 추가
+          seat.addEventListener('click', () => toggleSeat(seat, r, c));
+        }
+        seatMap.appendChild(seat);
+      }
+    }
+
+    // 좌석 선택/해제 함수
+    function toggleSeat(seatElement, row, col) {
+      const seatId = `${String.fromCharCode(65 + row)}${col + 1}`; // 예: A1, B4
+      
+      if (seatElement.classList.contains('selected')) {
+        seatElement.classList.remove('selected');
+        selectedSeats = selectedSeats.filter(id => id !== seatId);
+      } else {
+        if(selectedSeats.length >= 4) {
+          alert("최대 4석까지만 선택 가능합니다.");
+          return;
+        }
+        seatElement.classList.add('selected');
+        selectedSeats.push(seatId);
+      }
+      updateFooter();
+    }
+
+    // 하단 결제 정보 업데이트
+    function updateFooter() {
+      if (selectedSeats.length > 0) {
+        selectedSeatsText.textContent = selectedSeats.join(', ');
+        paymentBtn.style.opacity = '1';
+        paymentBtn.style.cursor = 'pointer';
+        paymentBtn.textContent = `${selectedSeats.length * 15000}원 결제하기`;
+      } else {
+        selectedSeatsText.textContent = '-';
+        paymentBtn.style.opacity = '0.5';
+        paymentBtn.style.cursor = 'not-allowed';
+        paymentBtn.textContent = '결제하기';
+      }
+    }
+  </script>
+</body>
+</html>
