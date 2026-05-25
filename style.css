@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+body {
+    background-color: #08080A;
+    color: #f8f8f8;
+    letter-spacing: -0.03em;
+    word-break: keep-all;
+}
+
+/* 글래스 모피즘 효과 */
+.glass-panel {
+    background-color: #16161A;
+    border: 1px solid rgba(255, 255, 255, 0.08); /* 굵기/선명도 완화 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.glass-panel:hover {
+    border-color: rgba(229, 9, 20, 0.3);
+    background-color: #1A1A1E;
+}
+
+/* Portfolio Animations - 더 높이 올라오고 더 부드럽게 */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(80px); /* Y축 이동 80px로 변경 */
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); /* 1.2초로 부드럽게 */
+}
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 순차적 등장(Staggering)을 위한 딜레이 클래스 */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+
+.aura-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* 무한 롤링 텍스트 배너 */
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+    display: flex;
+    width: 200%;
+    animation: marquee 25s linear infinite;
+}
+
+/* 전체 스크롤바 커스텀 */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #08080A; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #E50914; }
+
+h1, h2, h3, h4, h5 { letter-spacing: -0.04em; }
+
+/* iframe 스크롤 방지 */
+iframe { transition: all 0.3s ease; }
