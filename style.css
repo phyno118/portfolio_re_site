@@ -1,5 +1,26 @@
 @charset "UTF-8";
 
+/* 1. Gmarket Sans 웹 폰트 로드 (Light, Medium, Bold) */
+@font-face {
+    font-family: 'GmarketSans';
+    font-weight: 300;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+}
+@font-face {
+    font-family: 'GmarketSans';
+    font-weight: 500;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+}
+@font-face {
+    font-family: 'GmarketSans';
+    font-weight: 700;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+}
+
+/* 기본 바디 설정 */
 body {
     background-color: #08080A;
     color: #f8f8f8;
@@ -10,7 +31,7 @@ body {
 /* 글래스 모피즘 효과 */
 .glass-panel {
     background-color: #16161A;
-    border: 1px solid rgba(255, 255, 255, 0.08); /* 굵기/선명도 완화 */
+    border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .glass-panel:hover {
@@ -18,18 +39,17 @@ body {
     background-color: #1A1A1E;
 }
 
-/* Portfolio Animations - 더 높이 올라오고 더 부드럽게 */
+/* Portfolio Animations - 부드럽고 엣지있게 */
 .fade-in-up {
     opacity: 0;
-    transform: translateY(80px); /* Y축 이동 80px로 변경 */
-    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); /* 1.2초로 부드럽게 */
+    transform: translateY(80px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .fade-in-up.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* 순차적 등장(Staggering)을 위한 딜레이 클래스 */
 .delay-100 { transition-delay: 100ms; }
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
